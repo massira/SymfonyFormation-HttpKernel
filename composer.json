@@ -1,0 +1,19 @@
+{
+    "name": "mohamedamine/symfony-httpkernel",
+    "description": "Code to illustrate the inner working of the httpkernel component",
+    "type": "project",
+    "require": {
+        "symfony/http-kernel": "^3.3",
+        "symfony/routing": "^3.3"
+    },
+    "autoload": {
+      "psr-4": {"HttpKernel\\Formation\\": "src/"}
+    },
+    "license": "mit",
+    "authors": [
+        {
+            "name": "Massira",
+            "email": "mohamed.anbri92@gmail.com"
+        }
+    ]
+}
