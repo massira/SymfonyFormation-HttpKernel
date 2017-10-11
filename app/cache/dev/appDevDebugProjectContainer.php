@@ -28,11 +28,12 @@ class appDevDebugProjectContainer extends Container
         $this->parameters = $this->getDefaultParameters();
 
         $this->services = array();
+        $this->normalizedIds = array(
+            'httpkernel\\formation\\service\\factory\\httpkernelfactory' => 'HttpKernel\\Formation\\Service\\Factory\\HttpKernelFactory',
+        );
         $this->methodMap = array(
-            'argument_resolver' => 'getArgumentResolverService',
-            'controller_resolver' => 'getControllerResolverService',
+            'HttpKernel\\Formation\\Service\\Factory\\HttpKernelFactory' => 'getHttpKernel_Formation_Service_Factory_HttpKernelFactoryService',
             'http_kernel' => 'getHttpKernelService',
-            'request_stack' => 'getRequestStackService',
         );
 
         $this->aliases = array();
@@ -65,23 +66,13 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
-     * Gets the public 'argument_resolver' shared service.
+     * Gets the public 'HttpKernel\Formation\Service\Factory\HttpKernelFactory' shared autowired service.
      *
-     * @return \Symfony\Component\HttpKernel\Controller\ArgumentResolver
+     * @return \HttpKernel\Formation\Service\Factory\HttpKernelFactory
      */
-    protected function getArgumentResolverService()
+    protected function getHttpKernel_Formation_Service_Factory_HttpKernelFactoryService()
     {
-        return $this->services['argument_resolver'] = new \Symfony\Component\HttpKernel\Controller\ArgumentResolver();
-    }
-
-    /**
-     * Gets the public 'controller_resolver' shared service.
-     *
-     * @return \Symfony\Component\HttpKernel\Controller\ControllerResolver
-     */
-    protected function getControllerResolverService()
-    {
-        return $this->services['controller_resolver'] = new \Symfony\Component\HttpKernel\Controller\ControllerResolver();
+        return $this->services['HttpKernel\Formation\Service\Factory\HttpKernelFactory'] = new \HttpKernel\Formation\Service\Factory\HttpKernelFactory();
     }
 
     /**
@@ -91,17 +82,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getHttpKernelService()
     {
-        return $this->services['http_kernel'] = new \Symfony\Component\HttpKernel\HttpKernel(${($_ = isset($this->services['event_dispatcher']) ? $this->services['event_dispatcher'] : $this->get('event_dispatcher')) && false ?: '_'}, ${($_ = isset($this->services['controller_resolver']) ? $this->services['controller_resolver'] : $this->get('controller_resolver')) && false ?: '_'}, ${($_ = isset($this->services['request_stack']) ? $this->services['request_stack'] : $this->get('request_stack')) && false ?: '_'}, ${($_ = isset($this->services['argument_resolver']) ? $this->services['argument_resolver'] : $this->get('argument_resolver')) && false ?: '_'});
-    }
-
-    /**
-     * Gets the public 'request_stack' shared service.
-     *
-     * @return \Symfony\Component\HttpFoundation\RequestStack
-     */
-    protected function getRequestStackService()
-    {
-        return $this->services['request_stack'] = new \Symfony\Component\HttpFoundation\RequestStack();
+        return $this->services['http_kernel'] = ${($_ = isset($this->services['HttpKernel\Formation\Service\Factory\HttpKernelFactory']) ? $this->services['HttpKernel\Formation\Service\Factory\HttpKernelFactory'] : $this->get('HttpKernel\Formation\Service\Factory\HttpKernelFactory')) && false ?: '_'}->getHttpKernel();
     }
 
     /**
@@ -176,7 +157,7 @@ class appDevDebugProjectContainer extends Container
         switch ($name) {
             case 'kernel.root_dir': $value = $this->targetDirs[2]; break;
             case 'kernel.project_dir': $value = $this->targetDirs[3]; break;
-            case 'kernel.logs_dir': $value = ($this->targetDirs[2].'/logs'); break;
+            case 'kernel.logs_dir': $value = ($this->targetDirs[2].'\\logs'); break;
             default: throw new InvalidArgumentException(sprintf('The dynamic parameter "%s" must be defined.', $name));
         }
         $this->loadedDynamicParameters[$name] = true;
